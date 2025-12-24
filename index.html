@@ -1,47 +1,25 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Guess Game – Wallet Connect</title>
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; padding: 24px; }
-      button { padding: 12px 14px; font-size: 16px; cursor: pointer; }
-      .small { opacity: .85; margin-top: 10px; white-space: pre-wrap; }
-      .ok { color: #0b7a28; }
-      .bad { color: #b00020; }
-    </style>
-  </head>
-  <body>
-    <h2>Connecting MetaMask…</h2>
-    <p>請確認已安裝並解鎖 MetaMask。</p>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <title>Internal Guess Game</title>
+</head>
+<body>
+  <h2>Internal Guess Game</h2>
 
-    <button id="btn">Connect MetaMask</button>
-    <div id="status" class="small"></div>
+  <p><b>題目：</b>下週誰會遲到？</p>
 
-    <script>
-      const statusEl = document.getElementById("status");
-      const setStatus = (t, cls="") => { statusEl.className = "small " + cls; statusEl.textContent = t; };
+  <button onclick="bet(0)">A</button>
+  <button onclick="bet(1)">B</button>
+  <button onclick="bet(2)">C</button>
 
-      document.getElementById("btn").addEventListener("click", async () => {
-        try {
-          if (!window.ethereum) {
-            setStatus("找不到 MetaMask（window.ethereum）。請確認已安裝且啟用。", "bad");
-            return;
-          }
-          setStatus("正在請求授權…（請查看 MetaMask 彈窗）");
+  <p>
+    下注金額：
+    <input id="amount" value="100" /> KGIT
+  </p>
 
-          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-          const chainId  = await window.ethereum.request({ method: "eth_chainId" });
+  <p id="status"></p>
 
-          // 回傳給 extension（content script 會接住）
-          window.postMessage({ type: "MM_CONNECT_RESULT", accounts, chainId }, "*");
-
-          setStatus("授權成功 ✅ 分頁即將關閉…", "ok");
-        } catch (e) {
-          window.postMessage({ type: "MM_CONNECT_RESULT", error: (e?.message || String(e)) }, "*");
-          setStatus("授權失敗：" + (e?.message || String(e)), "bad");
-        }
-      });
-    </script>
-  </body>
+  <script src="game.js"></script>
+</body>
 </html>
