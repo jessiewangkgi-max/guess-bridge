@@ -1,7 +1,7 @@
 const CONFIG = {
   chainIdHex: "0xaa36a7", // Sepolia = 11155111
   guessAddress: "0x483aee89c55737eceaab61c4ffe0e74b0f88e4a8",
-  tokenAddress: "PASTE_YOUR_KGIT_TOKEN_ADDRESS_HERE", // ← 你填 KGIT 合約地址
+  tokenAddress: "0x07e7AF255D6e349a9E8fDC2D5ecB0479C6641945", // ← 你填 KGIT 合約地址
   questionId: 0
 };
 
