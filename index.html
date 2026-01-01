@@ -10,62 +10,114 @@
 
   <div class="card">
     <div class="row">
-      <button id="btnConnect">Connect MetaMask</button>
-      <div class="muted" id="walletInfo"></div>
+      <button id="btnConnect" class="primary">Connect MetaMask</button>
+      <div id="walletInfo" class="muted"></div>
     </div>
-    <div class="muted" id="netInfo"></div>
-    <div class="muted" id="msg"></div>
+    <div id="netInfo" class="muted"></div>
+    <div id="msg" class="muted"></div>
   </div>
 
-  <div class="card">
-    <h2>題目（questionId = 0）</h2>
-    <div id="qText" class="big">（讀取中…）</div>
-    <div id="qOptions" class="row"></div>
+  <!-- 同一頁：左列表 / 右詳情 -->
+  <div class="grid2">
+    <!-- 左：題目列表 -->
+    <div class="card">
+      <div class="row" style="justify-content: space-between;">
+        <h2 style="margin:0;">題目列表</h2>
+        <button id="btnReload">Reload</button>
+      </div>
 
-    <div class="row" style="margin-top: 12px;">
-      <label>下注金額：</label>
-      <input id="betAmount" value="100" />
-      <span>KGIT</span>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:70px;">ID</th>
+            <th>題目</th>
+            <th style="width:120px;">狀態</th>
+            <th style="width:120px;">總池</th>
+          </tr>
+        </thead>
+        <tbody id="qList"></tbody>
+      </table>
+      <div class="muted" style="margin-top:8px;">
+        點左側題目即可在右側查看／下注／看結果
+      </div>
     </div>
 
-    <div class="row" style="margin-top: 12px;">
-      <button id="btnApproveBet">Approve + Bet（選到哪個就押哪個）</button>
-      <button id="btnClaim">Claim</button>
-      <button id="btnRefund">Refund</button>
-      <button id="btnRefresh">Refresh</button>
+    <!-- 右：題目詳情 -->
+    <div class="card">
+      <h2 style="margin-top:0;">題目詳情</h2>
+
+      <div id="detailHeader" class="muted">（尚未載入）</div>
+      <div id="qText" class="big">—</div>
+
+      <div class="row" id="qOptions"></div>
+
+      <div class="muted" id="poolInfo" style="margin-top:10px;"></div>
+      <div class="muted" id="optionPools"></div>
+
+      <!-- 下注區：只有 Open 可用 -->
+      <div id="betBox" style="margin-top:16px;">
+        <h3 style="margin: 0 0 8px;">下注</h3>
+        <div class="row">
+          <label>下注金額：</label>
+          <input id="betAmount" value="100" />
+          <span id="tokenSymbol">TOKEN</span>
+          <button id="btnApproveBet" class="primary">Approve + Bet</button>
+        </div>
+        <div class="muted" id="myInfo" style="margin-top:8px;"></div>
+      </div>
+
+      <!-- 結果區：只有 Resolved 顯示 -->
+      <div id="resultBox" style="margin-top:16px; display:none;">
+        <h3 style="margin: 0 0 8px;">結果</h3>
+        <div class="muted" id="answerInfo"></div>
+
+        <div class="row" style="margin-top:10px;">
+          <button id="btnClaim">Claim（答對領錢）</button>
+          <button id="btnRefund">Refund（無人中獎退款）</button>
+          <button id="btnRefresh">Refresh</button>
+        </div>
+
+        <div class="row" style="margin-top:12px; align-items:flex-start;">
+          <div style="flex:1;">
+            <div class="muted" style="font-weight:700;">答對</div>
+            <div id="winners" class="box"></div>
+          </div>
+          <div style="flex:1;">
+            <div class="muted" style="font-weight:700;">答錯</div>
+            <div id="losers" class="box"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="margin:18px 0; border:none; border-top:1px solid #eee;">
+
+      <!-- Owner 操作 -->
+      <div id="ownerBox">
+        <h3 style="margin: 0 0 8px;">出題者（Owner）</h3>
+
+        <div class="row">
+          <label>題目：</label>
+          <input id="newText" value="下週誰會遲到？" style="width: 520px;"/>
+        </div>
+
+        <div class="row" style="margin-top: 8px;">
+          <label>選項（JSON array）：</label>
+          <input id="newOptions" value='["A","B","C"]' style="width: 520px;"/>
+        </div>
+
+        <div class="row" style="margin-top: 12px;">
+          <button id="btnCreate" class="primary">Create Question</button>
+        </div>
+
+        <div class="row" style="margin-top: 12px;">
+          <label>公布答案：</label>
+          <select id="answerSel"></select>
+          <button id="btnResolve" class="primary">Resolve</button>
+        </div>
+
+        <div class="muted">※ 只有合約 owner 才能 Create / Resolve。</div>
+      </div>
     </div>
-
-    <div class="muted" id="stateInfo"></div>
-  </div>
-
-  <div class="card">
-    <h2>出題者（Owner）操作</h2>
-
-    <div class="row">
-      <label>題目：</label>
-      <input id="newText" value="下週誰會遲到？" style="width: 520px;"/>
-    </div>
-
-    <div class="row" style="margin-top: 8px;">
-      <label>選項（JSON array）：</label>
-      <input id="newOptions" value='["A","B","C"]' style="width: 520px;"/>
-    </div>
-
-    <div class="row" style="margin-top: 12px;">
-      <button id="btnCreate">Create Question（會寫入鏈上）</button>
-    </div>
-
-    <div class="row" style="margin-top: 12px;">
-      <label>公布答案：</label>
-      <select id="answerSel">
-        <option value="0">A</option>
-        <option value="1">B</option>
-        <option value="2">C</option>
-      </select>
-      <button id="btnResolve">Resolve（公布正解）</button>
-    </div>
-
-    <div class="muted">※ 只有合約 owner 會成功，其他人會 revert。</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
