@@ -1,0 +1,11 @@
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; padding: 24px; }
+h1 { margin: 0 0 16px; }
+.card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; margin: 14px 0; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+button { padding: 10px 12px; border-radius: 10px; border: 1px solid #999; background: #fff; cursor: pointer; }
+button.primary { border-color: #333; font-weight: 600; }
+input, select { padding: 8px 10px; border-radius: 10px; border: 1px solid #bbb; }
+.muted { color: #666; }
+.big { font-size: 18px; font-weight: 600; margin: 8px 0 12px; }
+.optBtn { padding: 10px 14px; border-radius: 10px; border: 1px solid #aaa; }
+.optBtn.selected { border-color: #111; font-weight: 700; }
