@@ -1,25 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8"/>
   <title>Internal Guess Game</title>
+  <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
-  <h2>Internal Guess Game</h2>
+  <h1>Internal Guess Game</h1>
 
-  <p><b>題目：</b>下週誰會遲到？</p>
+  <div class="card">
+    <div class="row">
+      <button id="btnConnect">Connect MetaMask</button>
+      <div class="muted" id="walletInfo"></div>
+    </div>
+    <div class="muted" id="netInfo"></div>
+    <div class="muted" id="msg"></div>
+  </div>
 
-  <button onclick="bet(0)">A</button>
-  <button onclick="bet(1)">B</button>
-  <button onclick="bet(2)">C</button>
+  <div class="card">
+    <h2>題目（questionId = 0）</h2>
+    <div id="qText" class="big">（讀取中…）</div>
+    <div id="qOptions" class="row"></div>
 
-  <p>
-    下注金額：
-    <input id="amount" value="100" /> KGIT
-  </p>
+    <div class="row" style="margin-top: 12px;">
+      <label>下注金額：</label>
+      <input id="betAmount" value="100" />
+      <span>KGIT</span>
+    </div>
 
-  <p id="status"></p>
+    <div class="row" style="margin-top: 12px;">
+      <button id="btnApproveBet">Approve + Bet（選到哪個就押哪個）</button>
+      <button id="btnClaim">Claim</button>
+      <button id="btnRefund">Refund</button>
+      <button id="btnRefresh">Refresh</button>
+    </div>
 
-  <script src="game.js"></script>
+    <div class="muted" id="stateInfo"></div>
+  </div>
+
+  <div class="card">
+    <h2>出題者（Owner）操作</h2>
+
+    <div class="row">
+      <label>題目：</label>
+      <input id="newText" value="下週誰會遲到？" style="width: 520px;"/>
+    </div>
+
+    <div class="row" style="margin-top: 8px;">
+      <label>選項（JSON array）：</label>
+      <input id="newOptions" value='["A","B","C"]' style="width: 520px;"/>
+    </div>
+
+    <div class="row" style="margin-top: 12px;">
+      <button id="btnCreate">Create Question（會寫入鏈上）</button>
+    </div>
+
+    <div class="row" style="margin-top: 12px;">
+      <label>公布答案：</label>
+      <select id="answerSel">
+        <option value="0">A</option>
+        <option value="1">B</option>
+        <option value="2">C</option>
+      </select>
+      <button id="btnResolve">Resolve（公布正解）</button>
+    </div>
+
+    <div class="muted">※ 只有合約 owner 會成功，其他人會 revert。</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+  <script src="./abi.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
